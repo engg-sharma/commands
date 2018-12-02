@@ -413,6 +413,41 @@ REMOTE END
 GIT WORKFLOW
 #############################
 
+User1 workflow
+
+> git checkout master
+> git fetch
+> git merge origin/master
+> git checkout -b <branch_name>
+> git add <some_file>
+> git commit -m "some message" 
+> git fetch
+> git push -u origin <branch_name>
+> 
+
+User2 workflow
+
+> git checkout master
+> git fetch
+> git mergeorigin/master
+> git checkout -b <branch_name> origin/<branch_name>
+> git log
+> git show <sha>
+> git commit -am "some message"
+> git fetch
+> git push
+> 
+
+User1 workflow
+
+> git fetch
+> git log -p <branch_name>..origin/<branch_name>
+> git merge origin<branch_name>
+> git checkout master
+> git fetch
+> git merge origin/master
+> git merge <branch_name>
+> git push
 
 #############################
 GIT WORKFLOW END
