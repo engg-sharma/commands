@@ -1,0 +1,67 @@
+> npm search <package name>
+@ search packages by name
+
+> npm view <package name>
+@ view information about package
+
+> npm view <package name> | more
+@ page wise viewing
+
+> npm view <package name> version
+@ view the latest version
+
+> npm view <package name> versions
+@ view all the versions
+
+> npm install <package name>
+@ install a specific package
+
+> npm ls
+> npm list  
+> npm ls -g
+> npm list -g
+> npm ls --global
+> npm list --global
+@ list out all the application installed
+
+> npm uninstall <package name>
+@ uninstall a package
+
+> npm install <package name>@<version number>
+> npm install <package name>@">=0.1.0 <0.2.0"
+@ e.g npm install underscore@1.5.0
+@ install package by specific version
+
+> npm install <package name> -g
+> npm install <package name> --global
+@ install packages globally
+
+> npm init
+@ initialize package.json
+
+> npm init --force
+> npm init -f
+@ give package details later
+
+> npm install <package name> --save
+> npm install <package name> --save --save-exact
+@ adds the dependency to package.json
+@ --save -> saves the version information in package.json
+@ --save-prod -> package info will appear in your dependencies 
+@ --save-dev -> package info will appear in devDependencies
+@ --save-optional -> package will appear in optional dependencies
+@ --no-save -> prevents saving dependencies
+@ --save-exact -> save dependencies with an exact version
+@ --save-bundle -> saved dependencies will also be added to your bundleDependencies list
+
+> npm uninstall <package name> --save
+@ removes dependency from package.json
+
+> npm outdated
+@ gives details about older versions used
+
+> npm update
+@ updates all packages, updates versions also
+
+
+
