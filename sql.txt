@@ -1,0 +1,88 @@
+Resetting Root password
+
+>	c:\xampp\mysql\bin
+>	find my.ini file
+>	skip-grant-tables below [mysqld]
+>	Restart mysql(every thing)
+open Mysql with >mysql -u root -p
+> 	type the command
+	UPDATE mysql.user SET Password=PASSWORD('new_password') WHERE User='root' 
+>	restart mysql after deleting skip-grant-tables in the my.ini file
+
+
+
+mysql -u <user name or root> -p <database name - optional>
+
+
+user name:	app_dev 	password:	pikachu
+
+database name: 		ach_app_1
+
+use <database name>		select database
+
+show databases;			shows all databases
+
+show tables;			shows all tables in the database;
+
+Alter tables:			ALTER TABLE yourtable ADD q6 VARCHAR( 255 ) after q5
+
+				ALTER TABLE tbl_Country DROP COLUMN IsDeleted;
+
+
+
+show tables except 		show tables from <database name> where Tables_in_<database name> !=  '<tables not to show>';
+
+insert into table		insert into <table name> (columns ) values ()
+				insert into <table name> (columns ) values (),(),()//for multi row values for singl column	
+				
+				insert into event_table_main (event_name, event_display_name, last_date_reg, last_time_reg, event_date, event_time) values ("phone_no", "Phone No", "YYYY-MM-DD", "HH:MM:SS", "YYYY-MM-DD", "HH:MM:SS");
+
+
+delete rows			delete from <table name> where <column name> = 1 and <column name> = 2;
+
+count no of columns		select count (*) from information_schema.columns where table_name="<table_name>";
+
+Update				UPDATE table_name SET field1=new-value1, field2=new-value2
+				[WHERE Clause]
+
+				
+
+TO get column details		select column_name from information_schama.columns where table_schema="database name" and table_name="table name";
+
+				data_type for data type
+
+				no need for database name
+
+
+TO DUMP database		mysqldump -u<user name> -p <database name> > "D:\<filename.sql>"
+
+
+
+Load Database			create database <database name>
+				use <database name>
+				
+				source D:\<filename.sql>
+
+
+
+ORDER BY many things		select * from arse order by <field>, <field>, <field>, ....;
+
+
+Select max value from column 	SELECT MAX(column_name) FROM table_name;
+
+				select * from <table Name> where <column Name> in (select max(column Name) from <Table Name>);
+
+To find missing numbers		select l.id + 1 as start
+				from sequence as l
+				left outer join sequence as r on l.id + 1 = r.id
+				where r.id is null;
+
+
+				for project:
+				select distinct l.Team+1 as start from arse as l left join arse as r on l.Team+1=r.team where r.Team is null;
+
+Finding the max value in col	select max(Column_name) as column_name from table_name;
+				use min for minimum;
+
+
+				

@@ -1,0 +1,419 @@
+Commands - Git
+
+> configuring git
+@ System level
+  /etc/gitconfig (not sure in linux)
+  > git config --system
+@ User level
+  inside home direcotry ~/.gitconfig
+  > git config --global
+  here global means the user not the entire system
+@ project
+  my_project/.git/config
+  > git config 
+
+> git config (--flag) user.name "Firstname Lastname"
+> git config (--flag) user.email "email@email.com"
+
+> git config --list
+@ to see configuration
+
+> git config (--global) core.editor "nano/vim/emacs"
+@ to change default editor for git while providing message while merging, etc when git asks
+
+> git config (--global) colur.ui true
+@ tell git to use colors while outputting information to the commandline
+
+> git help 
+@ returns a page abt how to use git with all the commands
+
+> git help <command>
+@ show info about specific commands
+@ same as > man git-log
+
+> git init
+@ initialize the project in a particualr directory
+@ things outside the directory is of no concern
+@ things inside the directory is to be tracked
+@ makes a folder ".git" inside the folder, which is gits workspace, only change config file, dont change other files
+
+
+
+
+> git log
+@ shows all the commits
+> git log --oneline
+> @ shows all the commits in one line
+> git log --graph --oneline --all --decorate
+
+> git show <commit sha>
+shows the commit 
+
+> git diff
+@ comapres with staging index and repository
+@ shows things that are unique or different in the working directory
+
+> git diff --staged
+@ compare staging index with repository
+@ older version > git diff --cached
+
+> git diff --color-words <file_name>
+@ gives diff side by side instead of line by line
+
+> git rm <file_name>
+@ remove file 
+@ removes from the disk, doesnt put in the trash
+@ delete manually if u want to keep the file in trash, then use the command to update git
+
+
+> git mv <source_file> <destination_file>
+@ when git add and rm is done on a file, then if the data in the file is 50% same then git says those files are renamed
+
+> git add <file name or folder>
+@ adds to staging area
+
+> git commit -m "commit message" file name 
+@ commit a particular file
+
+> git commit -a
+@ add it to staging index and then commit it
+@ grabs everything including sth that you dont wna to commit
+@ files that are not tracked or deleted dont get included
+@ use "-m" option to provide message
+
+> git commit -am "commit message"
+/*Not sure*/
+@ commits everything
+
+> git commit --amend -m "amends previous commit, i.e. updates the previous commit, used for files or to update the commit message, the sha, date, etc changes"
+
+@ IMPORTANT
+@ best advice to undo previous (previous in the sense not exactly previous but somewhere down the tree) commit is to make new commits
+
+> git checkout <sha e.g. a3bef1ec3....> -- <file_name>
+@ checks out a file from a particular history in the commit tree, one of the ways to undo commits
+@ now commit again to revert
+@ instead go back to the HEAD to the latest commit
+@ git reset HEAD <file_name>
+@ git checkout -- <file_name>
+
+
+> git revert <sha>
+@ revert a commit, add what was deleted and delete what was added
+@ makes a new commit
+@ sha usually the top most sha
+@ -n(not sure) option puts it in the staging index, doesnt commit, gives u the chance to commit
+
+> git reset HEAD <file_name>
+@ go look at the head pointer which points to the last commit i.e. tip of the current branch, and reset the file to that particular stage
+@ undo in staging area
+
+> git reset
+@ 3 types of reset
+  1. --soft move the pointer HEAD to the specified commit and NOT going to change the staging index or the working directory
+      when we do a diff rite now, shows the diff betn the current files and the state to which it was reverted to
+  2. --mixed (default) moves the HEAD pointer to the specified commit and also changes the staging index to match the repo,
+      doesnt change the working directory 
+  3. --hard moves the HEAD pointer to the specified location, also changes the staging index and the working directory, any       chages after that change is destroyed
+      use with caution cuz itll delete what ever you have done which have not been commited or what ever which is in staging       index
+
+always record (i.e save in a file) all the sha with messages while reverting
+
+> git reset --soft <sha>
+> git reset --mixed <sha> 
+> git reset --hard <sha> 
+
+
+> git clean
+@ -n 
+ e.g git clean -n
+@ -f throws anything that is not in our repo. i.e throws untracked files, not staged files
+ e.g git clean -f
+
+#############################
+BRANCH
+#############################
+
+> git branch
+@ list all the branches
+
+> git branch <new branch name>
+@ creates a new branch from the current branch
+@ create a new branch 
+
+> git branch <new branch name> HEAD
+@ by default HEAD is already there when nothing is specified, where HEAD refers to current branch latest i.e. current branch HEAD
+
+> git branch <new branch name> <branch name>
+@ creates a new branch from a particular branch
+e.g.
+git branch newBranch master
+git branch newBranch origin/master
+
+> .git/HEAD 
+@ points to the current HEAD
+e.g ref: refs/heads/master
+
+> .git/refs/heads
+@keeps all the heads of all branches
+e.g 
+-rw-r--r-- 1 username @group someNumber Date master
+-rw-r--r-- 1 username @group someNumber Date branch_name
+
+> git checkout <branch name>
+@ to switch to another branch
+@ cant checkout if changes are not committed i.e there are no conflicts, if this happens then things you can do 3 things
+  @ scrap the changes by checking out the files
+  git checkout -- <file name>
+  @ e.g. git checkout -- index.html
+  @ commit the changes to the current branches
+  @ stash the changes
+
+> git checkout -b <new branch name>
+@ creates a new branch from the current branch
+@ creates and switches to new new branch
+@ check this out as a new branch
+
+> git checkout -b <new branch name> <branch>
+@ creates a new branch from an existing branch
+
+> git checkout -- <file>
+not trying to checkout a branch but just the file from the current branch
+
+> git diff <branch1 name>..<branch2 name>
+@ compare two different branches
+> git diff --color-words <branch1 name>..<branch2 name>
+@ compare two different branches, shows diff in same line
+
+> git branch --merged
+@ shows all branches that are completely included in the current branch
+e.g
+  master
+  new_feature
+* shorten_title
+shorten_title has everything from all branches
+e.g
+  master
+* new_feature
+shorten_title is not in new_feature or master, shorten_title might be of more importance
+
+> git branch -m <old branch name> <new branch name>
+@ to rename branch
+@ --move alternative
+
+> git branch -d <branch name>
+@ to delete a branch 
+@ alternative --delete
+@ cant delete a branch if it is the current branch
+@ cant delete if something is commited into the branch and is not commited to the current branch, use -D to delete it anyway
+
+> git merge <branch name>
+@ merges the branch into current branch, same command for both types of merge
+
+Types of merge 
+@ Fast-forward merge -> just moves the head, usually good when there is no merge conflict
+
+--[sha]--[sha] [sha] 
+          \    /
+          [sha]
+@ Real Merge (true merge) -> makes a commit
+
+--[sha]--[sha]--[sha] [sha]
+            \         /
+            [sha]---/
+options 
+@ --no-ff
+no fast forward merge, make a commit
+e.g.
+git merge --no-ff <branch>
+@ --ff-only
+merge only if you can do fast forward merge other wise abort, dont do real merge
+
+git merge conflict file
+
+<<<<<<< HEAD
+text in current branch or the receiver branch, 7= is the seperator between receiver branch and sender branch
+=======
+text in the sender branch or branch to be merged
+
+>>>>>>> branch_name
+
+here branch_name is the branch to be merged or sender branch
+
+At this state you are in merging state i.e. you are not completely in current branch, you are in e.g master|MERGING branch
+
+use git status to see merge conflict
+
+@ you have three choices to resolve conflict
+1. abort the merge
+git merge --abort
+2. resolve the conflict manually (most of the time this is done)
+3. use merge tool (not done in course)
+
+after resolving conflicts 
+do
+@ git add <file name with conflict>
+@ git commit 
+here no message in commit is required because itll take the default commit message
+
+#############################
+BRANCH END
+#############################
+
+
+#############################
+STASH
+#############################
+
+> git stash save "message for stash no -m required"
+@ command to stash
+@ here git does a hard reset
+@ see docs to include untracked files
+
+> git stash list
+@ lists all the stash
+e.g.
+stash@{0}: On <branch name>: <message>
+
+> git stash show <stash@{0}>
+@ shows info about stash, shows diff stat
+
+> git stash show -p  <stash@{0}>
+show as patch, patch is section of code that u can modify and change
+
+> git stash pop
+@ brings the code into working branch and removes the stash
+@ by default takes the first one stash@{0}
+
+> git stash apply 
+@ brings code into the working branch and keeps the stash as it is
+@ by default takes the first one stash@{0}
+
+> git stash drop stash@{0}
+@ removes stash 0
+
+> git stash clear
+@ deletes all the stash
+
+#############################
+STASH END
+#############################
+
+
+
+#############################
+REMOTE
+#############################
+
+> git remote
+@ lists all the remote
+@ stores url in .git/config/
+
+> git remote rm origin
+
+> git remote -v
+@ gives url for pushing and pulling (could be different)
+
+> git remote add origin <url>
+@ add remote reop
+
+> git push -u <remote e.g origin> <branch name>
+@ -u -> you always want to use -u option, helps in branch tracking
+@ in tracking branch next time u push u dont need to write <remote> and <origin>, just git push will work
+@ + provides features like 
+e.g. git diff origin/master..master
+checking diff betn local master and remote master
+
+@ see ".git/config" for details
+@ it has branch definition, which shows branch has remote which is some url(origin common case)
+@ see "./git/refs/remotes" to see all the remotes, u can see folders which represents different remote
+e.g. "./git/refs/remotes/origin"
+@ each "./git/refs/remotes/<remote>/" has a file representing a branch which contains a sha
+e.g.
+"./git/refs/remotes/<remote>/master" has some sha in it
+
+> git branch -r
+@ shows remote branches
+e.g.
+ origin/master
+> git branch -a
+@ shows both local and remote branches
+e.g.
+* master
+  seo_title
+  shorten_title
+  text_edits
+  remotes/origin/master
+
+> git clone <url/repo_name.git>
+@ clones the repo and puts it locally inside a folder called repo_name
+
+> git clone <url/repo_name.git> <new_folder_name>
+@ clones the repo and puts it locally inside a folder called new_folder_name
+
+@ IMPORTANT
+git clone automatically tracks remote branches 
+
+#### to make non tracking branch tracking #####
+
+@ thrre ways to do it
+
+1. put 
+`[branch "master"]
+    remote = origin
+    merge = refs/heads/master`
+    into .git/config
+
+> git config branch.<branch_name>.remote <remote e.g origin>
+@ to make a non tracking branch tracking
+e.g. git config branch.master.remote origin
+
+> git config branch.<branch_name>.merge refs/heads/master
+e.g. git config branch.master.merge refs/heads/master
+@ to make a non tracking branch tracking 
+@ see markdown 1. to find what this "refs/heads/master" means
+
+> git branch --set-upstream <branch_name> <remote>/<branch_name>
+@ used in older version of git
+
+#### to make non tracking branch tracking #####
+
+> git fetch <origin>
+@ origin not required if we have only one remote repo
+
+> git pull origin branchname --allow-unrelated-histories  
+@ allows merging two branches that have no common base by default
+
+
+
+> git push -u origin <branch name>
+@ -u is optional
+
+> git push origin :<branchname>
+@ deleting a branch on remote server
+@ when we push sth to remote branch, the command is
+"git push origin branch_name"
+which is interpreted as
+"git push origin branch_name:branch_name"
+which means push left side i.e. local branch into remote branch i.e. right side
+when we delete, then we are saying push nothing to remote branch, hence deleting it
+@ this is the OLD WAY
+
+> git push origin --delete <branch_name>
+@ delete a branch on remote server
+
+
+#############################
+REMOTE END
+#############################
+
+
+
+#############################
+GIT WORKFLOW
+#############################
+
+
+#############################
+GIT WORKFLOW END
+#############################

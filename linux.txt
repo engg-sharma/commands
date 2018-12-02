@@ -1,0 +1,12 @@
+#    zip -r -s 100m filename.zip  compress_folder
+    	* compress_folder -> folder to compress
+	* filename.zip -> file name of compressed folder
+	* -s split size
+	* m (megabytes), g (gigabytes), etc
+#    lspci :
+	* Lists pci like devices
+
+#    encfs ~/.encrypted ~/visible
+#    sudo shutdown -P 60
+         * replace 60 with any number in minutes
+#    sudo systemctl hibernate
