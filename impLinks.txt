@@ -2,3 +2,4 @@
 @files -> https://code.angularjs.org/1.5.8/
 @docs -> https://code.angularjs.org/1.5.8/docs/api
 @material -> https://material.angularjs.org/1.1.5/getting-started
+@styleGuide -> https://github.com/johnpapa/angular-styleguide/tree/master/a1#modules
