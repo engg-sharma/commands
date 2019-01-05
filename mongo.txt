@@ -1,0 +1,14 @@
+> sudo apt-get install -y mongodb-org
+to install mongo on ubuntu
+
+> sudo service mongod start
+to start mongo db on default port 27017
+
+> mongo
+get mongo terminal
+
+> mongo --version
+get mongo version
+
+> mongo --help
+get mongo help
