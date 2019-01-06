@@ -1,0 +1,43 @@
+VARIABLES:
+* no spaces betn variable name and equals to sign also no space betn equals to sign and value
+
+MISC:
+> enable 
+    built in
+> compgen -k 
+    list all keywords
+
+BASH : bash_rc and bash_profile
+* when gets started it gets some initialization variables from various files some of them are
+    .bash_profile -> read just when bash is started when u login
+    .bashrc -> executed everytime a shell is started
+
+    certain things are appropriate in .bash_profile some are appropriate in .brashrc
+
+    > setting environment variables are done in .bash_profile not .bashrc
+    e.g if you extend an exproted variable like PATH in .bashrc, it will grow with each nested shell invocation 
+    PATH=$PATH:/usr/local/bin -> this command concatinates "usr/local/bin" to the PATH variable 
+    this would keep adding /usr/local/bin to the end of PATH within nested shells
+    will concatinate 
+    > alias and functions are not normally exported, they are not defined in .bash_profile, cuz u want it in every shell so they are defined in .bashrc
+
+    > Ubuntu uses .profile instead of .bash_profile, if u create ur own .bash_profile then .profile will not be read
+
+* it doesnt hurt to export a variable which is already exported
+
+SOURCING:
+> source example.sh or .<space>example.sh -> to source a script
+    * whe u source a script, ur current shell just interprets the commands inside the source script as if they were done themselves, in contrast to starting a new process to run the script
+    * when a script is sourced and if script the script does things like assign the value to a variable, then this is happening in calling script only
+    * example sourcing is done to import variable, assignments or functions
+    * the source script is executed within  the calling shell's process
+
+ALIASING:
+* defining alternatives to long commands e.g. "ll" for "ls -l"
+* for commands not for general strings
+e.g
+> alias mroe=more
+> alias gs=git status
+* to unalias an alias
+> unalias <alias name>
+> unalias mroe
