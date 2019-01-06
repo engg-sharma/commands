@@ -1,9 +1,60 @@
+MISC:
+* if we want to execute more than one command in one line then seperate commands by ";" in the same line
+
 VARIABLES:
 * no spaces betn variable name and equals to sign also no space betn equals to sign and value
+e.g 
+> A=14
+* use unset to make a variable uninitialized
+e.g 
+> unset A
+* to print a variable use $ infront of a variable name 
+e.g
+echo $myVar
+
+* shell keeps variables in two different areas, 
+    * the area called environment or the exported variables -> these variables are copied to new processes, shells that we run
+        * if we want to assign a variable and then run a shell program to get a value from that variable then we need to export the variable
+        e.g
+        > export var2="var2 value"
+        * this puts var2 in the shell's environment
+        * every new process or shell gets a copy of this variable "var2" not the reference, they are not shared
+        * this can also be done using the syntax to export something 
+        > declare -x var2
+        * to export a function
+        > export -f functionName
+        To see which things has been exported to the environment(only exported) in bash use "export"
+        > export  
+    * 
+
+GROUPING IN BASH:
+    * parenthesis starts a new process
+    e.g suppose
+    a=1
+    (
+    a=2
+    )
+    echo $a
+    * this prints 1
+    * this is happeinig in a new copy or a process
+    * when the parenthesis is closed, what ever happens inside the parenthesis is gone    
+        
+ 
+    * curly braces dont start a new process
+    e.g suppose
+    a=1
+    {
+    a=2
+    }
+    echo $a
+    * this prints 2 
+    * curly braces doesnt start a new process
+    
 
 MISC:
+* type "enable" to get builtin commands list
 > enable 
-    built in
+* to list all keywords type "compgen -k"
 > compgen -k 
     list all keywords
 
@@ -25,6 +76,7 @@ BASH : bash_rc and bash_profile
 
 * it doesnt hurt to export a variable which is already exported
 
+
 SOURCING:
 > source example.sh or .<space>example.sh -> to source a script
     * whe u source a script, ur current shell just interprets the commands inside the source script as if they were done themselves, in contrast to starting a new process to run the script
@@ -37,7 +89,233 @@ ALIASING:
 * for commands not for general strings
 e.g
 > alias mroe=more
-> alias gs=git status
+> alias gs="git status"
 * to unalias an alias
 > unalias <alias name>
 > unalias mroe
+
+
+ECHO:
+* -n dont print the trailing new line
+* -e enable backslash escaped characters like \n and \t
+* -E disable backslash escaped characters in case they were enabled by default 
+
+* one common use is to redirect the output to a file or stdout or stderr
+e.g 
+> echo "Warning!" >&2
+this means send standard output to the same place as file number 2 which is standard error
+> is redirect standard output 
+& what comes next is a file descriptor not a file (only for right hand side of >)
+2 is stderr file descriptor
+here we are basically redirecting stdout from echo command to stderr
+e.g
+> echo "Hey" >2
+here we are outputting "hey" to a file called 2
+
+LOCAL VARIABLE AND TYPESET
+# typeset command
+* local variables can be declared as local to function by using "typeset" keyword
+* typeset also can provide a type or can provide formatting
+e.g
+> typeset -i x
+here -i tells that x should be declared as an integer
+* if declared as an integer then we can use integer operations like 
+    let x++; let y=x**2; let x=x*3; let x*=5; ...
+* also integer operations are 10x faster
+* here let allows for convenient arithmetic
+
+# declare command
+> declare -l 
+    whenever string is assigned to a variable then any uppercase letters in the string are converted into lowercase
+> declare -u 
+    whenever string is assigned to a variable then any lowercase letters in the string are converted into uppercase
+> declare -r 
+    variable is made read-only, value is given in declare statement
+> decalre -a arr 
+    variable arr is declared as an array, 
+> declare -A arr
+    variable arr is declared as an associative array
+* to access array elements use {}
+e.g 
+> ${arr[0]}
+> ${arr["user"]}
+
+READ COMMAND
+* lets read input to stdin into variables
+* breaks up the input based on white space
+e.g
+> read a b
+a will get the first word 
+b will get the rest of the line
+e.g
+> read a b c
+a will get the first word
+b will get the second word
+c will get the rest og the line
+
+WHILE LOOP
+
+while
+    command list 1
+do 
+    command list 
+done
+
+* if the last command in the "command list 1" is successful or true then we do the sequence of commands in the "command list"
+
+e.g
+while
+    ((x<10))
+do
+    echo loop $x; date >date.$x
+    ((x=x+1))
+done
+
+* here 10 files are created and the value of date is written in all the files data.1, data.2, ...
+
+e.g
+while
+    read a b
+do
+echo a is $a b is $b
+done <data_file
+
+* here we read the input, first word goes to a and rest of the line goes to b
+* in the "done" part we are telling "while" to take the input from the file called "data_file"
+* when do the read, the values are comming out of "data_file"
+* first iteration reads the first line of the file
+* second iteration reads the second line of the file and so on
+* the read command will be successful if it reads sth
+* when we run out of lines i.e reach EOF in the file, then the loop stops
+
+e.g
+ls -l | while
+    read a b c d
+    do
+        echo owner is $c
+    done
+
+* here we are piping result of "ls -l" into while
+* while loop runs for all the files present
+
+FOR LOOOPS
+
+syntax:
+for <var> in <list>
+do
+    command list
+done
+
+e.g 
+for i in dog rat elephant
+do 
+    echo i is $i
+done
+
+output:
+dog
+rat
+elephant
+
+COMMAND sqe:
+
+e.g
+> seq 1 5
+output:
+1 2 3 4 5
+* prints out numbers seperated by white spaces
+
+for num in `seq 1 5`
+    # loops over 1 2 3 4 5
+
+* bash runs the command with the back ticks "`"
+* if "new line" was present in the output of the commands executed within the  back ticks then it is converted into "spaces"
+* remember for loop takes space to distinguish different values
+
+* bash can generate sequences with {}
+e.g {A..Z}
+creates A B ...
+e.g. {1..10}
+creates 1 2 ...
+
+e.g
+for d in $(<data_file)
+    #loops over space/newLine
+    #seperated data in data_file
+* "$(" is an alternative to back ticks "`"
+* "<data_file" -> cat the data_file i.e the whole contents of data_file is going to be substituted back in the for loop
+
+e.g.
+for j in *.c
+    #making a list with file globbing
+* any file with .c extension
+
+e.g. 
+for f in $(find . -name *.c)
+    # using a command to generate a list
+* find command is going to go to all sub directories and find any file with extension .c
+
+FUNCTIONS
+
+syntax
+function printhello {
+    echo Hello
+}
+
+> printhello
+* shell memorizes the function like its a new command, so typing the function name in the command line executes the function
+* <space> is necessary after the function and before "{" during function declaration
+* functions are commands that can produce output
+* return from a function can be captured like this
+> hvar=$(printhello)
+or
+> hvar=`printhello`
+
+COMMAND return
+* used to return from a function
+
+COMMAND exit
+> exit <VALUE>
+* exit command used to terminate a whole shell script
+* can be used to return a exit status
+* if exit status not defined by the programmer then it defaults to 0
+* 0 means success, non 0 is failure
+* exit status can be checked by special bash variable "$?"
+
+REDIRECTION AND PIPES
+
+* processes normally have three files open:
+    0 => stdin,
+    1 => stdout,
+    3 => stderr
+* when we execute a command and use ">" or "2>" or "<", they mean:
+    * > telling the shell to redirect the stdout of that command to a specific file
+        e.g > file
+    * 2> telling the shell to redirect the stderr of that command to a specific file
+        e.g 2> file
+    * < telling the shell to redirect the input from keyboard to a specified file
+* &> means redirect both stdout and stderr to a specified file
+
+* if file is overwritten or created ! be careful
+
+#Pipe "|"
+* command | command2
+    * command2's stdin comes from command's stdout
+
+* command 2>&1 | command2
+    * "2>&1" redirect stderr at the same place as the stdout
+    * since we have a pipe, stdout is going into the pipe
+    * since we are using "2>&1", both stderr and stdout are going to the pipe
+
+* command |& command2
+    * alternative way for command2 to get command's stdout  and stderr as its stdin
+    * this may not work in all shells, works in bash
+
+* command >> file
+    * appends stdout of command to end of file, file doesnt exist then, file is created otherwise appended 
+
+* command &>> file
+    * appends stdout and stderr of command to end of file, file doesnt exit then, file is created otherwise appended
+
+* <<
+
