@@ -318,4 +318,175 @@ REDIRECTION AND PIPES
     * appends stdout and stderr of command to end of file, file doesnt exit then, file is created otherwise appended
 
 * <<
+    * HERE DOCUMENT
+   
+
+* exec N< file1
+    * opens file descriptor N for reading from file file1
+
+* exec N> file1
+    * opens file descriptor N for writing to file1
+
+* exec N<> file1
+    * opens file descriptor N for reading and writing with file1
+
+* exec N>&- OR exec N<&-
+    * closes the file descriptor N
+
+lsof COMMAND:
+    * list open files
+    * common usage
+    > lsof -p $$
+    * $$ is process id
+    * this will show what files the process has opened and which file descriptors are associated with the file
+    e.g
+    * exec 7>/tmp/file1
+    > lsof -p $$
+    * $$ is process id
+
+CASE STATEMENT
+
+case expression in
+pattern 1 )
+    command list ;;
+pattern 2 )
+    command list ;;
+    ...
+esac
+* patterns are file glbo kind of patterns and not regular expressions
+* patterns checked in sequence
+
+e.g
+case $ans in
+yes|YES|y|Y|y.x ) echo "will do!";;
+n*|N*) echo "Will NOT do!";;
+*) echo "Oops!";;
+esac
+
+* y.x is not regular expression,
+* in file globbing "." dot means dot, it doesnt mean a special character
+* so we have to type y.x
+
+IF-THEN_ELSE STATEMENT
+if
+command list
+then
+command list
+[else
+command list]
+fi
+
+e.g
+if grep -1 important myfile
+then
+    echo myfile has important stuff
+else
+    echo myfile does not have important stuff
+fi
+
+COMMAND test:
+* built in test is used to check conditions
+* loops and conditions often use the result of test
+* an alternative to test is [[]] or (())
+* [[ require space after [[
+* (( dont require space after ((
+
+e.g
+> if
+  test -f afile
+* the -f flag tests if "afile" is a file and exist, then true
+OR
+> if [[ -f bfile ]]
+OR
+> if
+  test $x -gt 5
+
+e.g
+ [[ ex1 -eq ex2 ]] [[ ex1 -ne ex2 ]]
+ [[ ex1 -lt ex2 ]] [[ ex1 -gt ex2 ]]
+ [[ ex1 -le ex2 ]] [[ ex1 -ge ex2 ]]
+
+e.g
+((ex1 == ex2)) ((ex1 != ex2))
+((ex1 < ex2)) ((ex1 > ex2))
+((ex1 <= ex2)) ((ex1 >= ex2))
+((ex1 && ex2)) ((ex1 || ex2))
+
+* -d tests if sth is a directory
+e.g
+> test -d X
+    * success if X is a directory
+test -f X
+    * success if X is a regular file
+test -s X
+    * success if X exists and not empty and is a file
+test -x X
+    * success if you have x permission on X
+test -w X
+    * success if you have w permission on X
+test -r X
+    * success if you have r permission on X
+
+ARITHMETIC OPERATORS
+* use (( )) or with let
+id++ id-- ++id --id
+! ~ ** * / % + -
+<< >>    <= >= < >
+== !=    & ^ |    && ||
+expr?expr:expr
+= *= /= %= += -= <<= >>= &= ^= |=
+expr1, expr2
+* comma "," operator means do the first thing and do the second thing and the value of the expression is the value of the second expression
+
+e.g
+((n=2**3 + 5))
+i.e (2 cube = 8) + 5 = 13
+((y=n^4))
+* "^" this is "exclusive or bitwise operation" or XOR result is 1 if two bits are different
+i.e 
+echo y = $y
+* prints 9, why?
+
+DEFINING FILTERS AND USING head, tail and wc, and PARAMETER EXPANSION TECHNIQUES
+* filters -> a program reads from stdin and writes to stdout, which means we can use it in the middle of a pipe
+* they do sorting, pattern matching, arithmetic, etc
+
+COMMAND head
+* prints first n lines that it gets from stdin
+
+COMMAND tail
+* prints last n lines that it gets from stdin
+* & tells to run the process in the back ground
+    e.g ./makeoutput.sh >output &
+    * this shell script runs in the background
+    * when u do tail -n2 -f output, it keeps on printing the updated value in the file "output" with the help of -f option i.e. follow
+
+e.g. 
+> ls -l | head -5 
+    * first 5 lines of ls -l
+> ls -l | tail -7 
+    * last 7 lines of ls -l
+> ls -l | head -10 | tail -5 
+    * gets lines 6-10
+
+COMMAND wc
+* it counts things
+* counts line, word, characters
+> wc -l 
+    * prints the number of lines
+    e.g.
+    > ls | wc -l
+    * prints number of entries in directory
+
+COMMAND sed
+* sed lets u do editing sort of command, like things u can do in vi editor but as a filter
+* works great in script
+* filter applies in every line of file, if it matches sth, doesnt change the file or output passed to it
+* it can edit a file to if -i flag is passed
+* most powerful command of sed is substitute command
+    e.g sed "s/old/new" myfile
+    * substitutes the occurance of "old" on each line for "new" in the file myfile and display the result on stdout
+    * "old" is a pattern and can be a regular expression
+* the above example substitutes only one occurance in a line, if every occurance on the line has to be changed then use "g" after the final "/" e.g "s/old/new/g"
+
 
