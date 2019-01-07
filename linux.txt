@@ -13,3 +13,12 @@
 @ replace 60 with any number in minutes
 
 > sudo systemctl hibernate
+
+> lsof -i :8000
+    * see which program is using the port 8080
+
+> nl <file name>
+    * this command is like cat but prints line number also
+
+> netstat -an | grep LISTEN
+    * see all the ports that are listening to sth

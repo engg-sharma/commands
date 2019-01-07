@@ -1,0 +1,42 @@
+* from stackexchange
+https://unix.stackexchange.com/questions/168794/how-to-get-the-list-of-ports-which-are-free-in-a-unix-server
+
+#####
+
+1: You should't use anonymous ports (a.k.a. ephemeral ports) to implement a UDP or TCP service.
+
+By default, these ports are in the range 32768 - 65535.
+
+# ndd /dev/tcp tcp_smallest_anon_port
+32768
+# ndd /dev/tcp tcp_largest_anon_port 
+65535
+2: Unless your service is running as root or has the required RBAC privilege, you shouldn't use a privileged port. By default all ports from 1 to 1024 are privileged:
+
+# ndd /dev/tcp tcp_smallest_nonpriv_port
+1024
+3: Unless you know what you are doing, you shouldn't use a well known port that is expected to run a different service than the one you plan to. Well known ports are listed in /etc/services. eg:
+
+# tail /etc/services
+dtspc           6112/tcp                        # CDE subprocess control
+fs              7100/tcp                        # Font server
+solaris-audit   16162/tcp                       # Secure remote audit logging
+servicetag      6481/udp
+servicetag      6481/tcp
+wnn6            22273/tcp                       # Wnn6 jserver
+wnn6            22273/udp                       # Wnn6 jserver
+rdc             121/tcp                         # SNDR server daemon
+snmpd           161/udp        snmp             # Net-SNMP snmp daemon
+swat            901/tcp                         # Samba Web Adm.Tool
+4: You shouldn't use a port that is already used by an existing service. You can get these with running:
+
+# netstat -an | grep LISTEN | nawk '{$0=$1;gsub(".*\\.","");print}' | sort -un
+5: Finally, you shouldn't use a port used by a service currently disabled but that might be enabled in the future. This is the trickiest part to comply with...
+
+#####
+
+> lsof -i :8000
+    * see which program is using the port 8080
+
+> netstat -an | grep LISTEN
+    * see all the ports that are listening to sth
