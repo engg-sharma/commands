@@ -489,4 +489,41 @@ COMMAND sed
     * "old" is a pattern and can be a regular expression
 * the above example substitutes only one occurance in a line, if every occurance on the line has to be changed then use "g" after the final "/" e.g "s/old/new/g"
 
+e.g
+sed "s/@home/@domicile/; s/struck/lorrie/"
+sed -e "s/[xX]/Y/" -e "s/b.*n/blue/"
+    * for expression
+sed -f sedscript -n sed4
+    * -f for file
+    * -n for echoing out only the lines we want it to
+date | sed "s/J/j"
+sed "1,5p"
+    * to print first five lines
+sed "/alpha/s/beta/gamma/"
+    * if the line has "alpha" on it then substitute beta for gamma
+sed "/apple/,/orange/d"
+    * find a line that has apple on it, then go to a line that has orange on it and delete that whole sequence of lines from apple to orange
+sed "/important/!s/print/throw_away/"
+    * if the line has "important" on it, dont substitute "print" into "throw_away"
+    * on any lines expcept those that have "important" substitute "print" for "throw_away"
+
+
+COMMAND awk
+    * program to do filter sort of stuff
+    * built in regular expression sort of stuff, loops, arithmetic, etc
+    * syntax convinient than bash
+    * good for report writing
+    * handy for short "algorithmic" kinds of processing
+    * processes a line at a time like sed
+    * breaks each line down into fields or words and u can refer to those by $1, $2, etc
+    * fields are delimited by a special awk variable called FS, which normally is white spaces or tabs
+    * $0 means the entire line (record)
+
+e.g 
+> ps -el | \
+> awk '/pts/||$8~/35/{printf("%5d %5d %s\n", $4, $5, $14)}'
+    * "\" -> both lines should be on one line
+    * awk is going to loop over every line given by ps -el
+    * if the line has "pts" on it or field number "8" matches the string "35", then print do a printf
+
 

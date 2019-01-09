@@ -22,3 +22,8 @@
 
 > netstat -an | grep LISTEN
     * see all the ports that are listening to sth
+
+> ln -s /path/to/file /path/to/symlink
+    * to create new symbolic link, will fail if symbolic link exists already
+> ln -s /path/to/file /path/to/symlink
+    * to create or update symbolic link

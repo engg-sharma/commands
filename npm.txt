@@ -64,4 +64,7 @@
 @ updates all packages, updates versions also
 
 
-
+> httpster -d ./ -p 3000
+    * to start httpster 
+    * -d for directory for public
+    * -p for port for localhost
