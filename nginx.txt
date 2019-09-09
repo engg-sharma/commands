@@ -1,0 +1,67 @@
+IMPORTANT DIRECTORIES
+* /etc/nginx 
+    * this directory holds the configuration for entire nginx installation
+    * inside this directory we'll find files that control the way the web server runs, along with the files that defines the websites being served
+
+* main configuration file is "nginx.conf"
+
+* important locations inside "/etc/nginx/"
+    * these locations are where we'll store our server configuration files
+        * conf.d
+        * sites-available
+            * example configuration is stored inside this directory in a file called "default", this configuration sets up the welcome to nginx page
+        * sites-enabled
+
+* important directories outside "/etc/nginx"
+    * "/var/log/nginx"
+        * this is where nginx stores log files
+            * access.log -> file where nginx stores any access that the web server process along with details like the time the access occured, the ip address of the requester and the file that was requested
+           * error.log -> stores errors and other operational details
+    * "/var/www"
+        * this location is used to store the actual file that get served to a client including html, images, and any other document that are stored on the server
+        * the default directory for this is "var/www/html"
+        * as we keep on confuguring we can create our own directories inside "var/www"
+
+
+* check status of nginx 
+    > systemctl status nginx 
+        * this command returns a pager to not return a pager use
+        > systemctl status nginx --no-pager
+* use systemctl to start and stop nginx
+    > systemctl start nginx
+        * to start nginx, doesnt produce output
+    > systemctl stop nginx
+        * to stop nginx, doesnt produce output
+    > systemctl is-active nginx
+        * informs if a service is active
+    > systemctl reload nginx 
+        * tells nginx ti reload all it's configuration files from disk, because nginx loads its configuration into memory when it starts, the reload command is needed to any configuration change that is needed to be applied, alternative to this is stoping and starting nginx but this would cause the service to be offline, doesnt produce output
+    > systemctl status nginx
+        * to check the status of nginx
+    
+    > ngnix -h 
+        * this command lists the version being run and some of the options that we can use
+        * the most important options are "-t" and "-T", these let us test the nginx configuration
+        * "-t" checks the conf without stopping or reloading the service, helps make changes to the confand then test them before reloading it
+        * "-T" tests the configuration and prints it to the screen
+
+CONFIGURATION "/etc/nginx/nginx.conf"
+    * mainnginx configuration file
+    * conf listed as "simple directive" in one line or in "block directive"(opened by "{" and "}") in multiple line 
+    * simple directive -> 
+        e.g. "user www-data" this defines the user that the nginx process will use after it gets started by the root user
+    * block directive ->
+        e.g. http {
+                ... 
+                include /etc/nginx/conf.d/*.conf
+                include /etc/nginx/sites-enabled/*
+             }
+            * directive that contains other directive
+            * these tell the main conf file to process configuration file in other directories, particularly the "nginx/conf.d/*.conf" and "nginx/sites-enabled"
+            
+            * HOW ADDITIONAL CONF may be added to nginx
+            * the directory "nginx/conf.d/" has a wild card "*.conf" but the "nginx/sites-available" has "*" as wildcard
+            * one method of adding conf is to add files inside "/nginx/conf.d" with an extension ".conf"
+            * another method is to make a file in "sites-available" and link them to "sites-enabled" directory using symbolic link
+            * even the "default" file inside "sites-enabled" is a link from the directory "sites-available"
+

@@ -27,3 +27,27 @@
     * to create new symbolic link, will fail if symbolic link exists already
 > ln -s /path/to/file /path/to/symlink
     * to create or update symbolic link
+
+> service --status-all
+    * get all service status
+
+> systemctl list-units --type service
+    * to get the list of services started at boot time
+
+> systemctl list-units --type service --all
+   * to get the list of all the services running active or not not active 
+
+> systemctl is-enabled <service name>
+    * e.g. > systemctl is-enabled apache2
+
+> sudo systemctl disable <service name>
+    * disable a service to start at runtime
+
+> sudo systemctl mask <service name>
+    * to make sure that no other service can start the service
+
+> systemctl list-dependencies --type service
+    * to know the dependencies of services
+
+> locate <service name>.service
+    * e.g. locate apache2.service 

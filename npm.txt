@@ -68,3 +68,7 @@
     * to start httpster 
     * -d for directory for public
     * -p for port for localhost
+
+> ./node_modules/babel-cli/bin/babel.js ./src/index.js --out-file ./dist/bundle.js
+    * babel cli command to produce output
+    * probably can be done with "./node_modules/.bin/babel" -> check

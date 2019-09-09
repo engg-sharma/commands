@@ -1,0 +1,12 @@
+INSTALLATION
+    * see instructions from website
+    * ubuntu version is like e.g.bionic, trusty
+
+* to get into operating system user
+    > sudo -u postgres psql
+
+* to create user from the psql terminal
+    > CREATE USER <username>;
+
+* to grant superuser and createdb privileges to a user
+    > ALTER USER <user name> SUPERUSER CREATEDB;
