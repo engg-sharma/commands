@@ -1,0 +1,13 @@
+> ng help 
+@ lists all the commands available
+
+> ng new <project name>
+@ make a new angular project
+@ inside the newly created project folder, src contains the logic, data and assets
+@ angular.json is the workspace configuration file
+
+> ng serve 
+@ start a server on https://localhost:4200/ 
+@ server automatically rebuilds the app and reloads the page
+
+ 
