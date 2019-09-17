@@ -1,0 +1,8 @@
+> adb shell pm list packages
+* to list all the packages on the android device/emulator
+
+> adb shell pm path com.example.someapp
+* get the path of the app
+
+> adb pull /data/aoo/com/example/someapp.....apk path/to/destination
+* to copy apk file from phone/emulator to desired location
