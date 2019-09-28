@@ -51,3 +51,6 @@
 
 > locate <service name>.service
     * e.g. locate apache2.service 
+
+> sudo service network-manager restart
+    * restart network manager, restart wifi
